@@ -1,0 +1,10 @@
+importFrom("stats", "glm","coef","vcov")
+import("dbplyr")
+import("rlang")
+import("purrr")
+import("dplyr")
+export(dbglm)
+S3method(summary,dbglm)
+S3method(residuals, dbglm)
+S3method(fitted,dbglm)
+

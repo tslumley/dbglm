@@ -1,0 +1,10 @@
+Package: dbglm
+Title: Generalised linear models by subsampling and one-step polishing
+Version: 0.1
+Author: Thomas Lumley
+Description: Fast fitting of generalised linear models on moderately large datasets, by taking an initial sample, fitting in memory, then evaluating the score function for the full data in the database
+Imports: DBI, dbplyr, tidypredict
+Suggests: MonetDBLite
+License: GPL (>= 2)
+Maintainer: Thomas Lumley <t.lumley@auckland.ac.nz>
+
