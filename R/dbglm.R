@@ -2,6 +2,8 @@
 library(tidypredict)
 library(dbplyr)
 library(dplyr)
+library(purrr)
+library(rlang)
 library(MonetDBLite)
 
    
@@ -56,7 +58,7 @@ dbglm<-function(formula, family = binomial(), tbl, sd=FALSE,weights=.NotYetImple
 
   }
 }
-
+strip_factor<-function(x) gsub("factor\\((.+)\\)","\\1",x)
 
 score_mean<- function(df, model,fitname="_fit_",residname="_resid_") {
 	df <- df %>% tidypredict_to_column(model, vars=c(fitname,"",""))
@@ -81,7 +83,7 @@ score_mean<- function(df, model,fitname="_fit_",residname="_resid_") {
   
   f <- seq_len(nrow(all_terms)) %>%
     map(~{
-      vars <- colnames(all_terms)
+      vars <- strip_factor(colnames(all_terms))
       vals <- as.character(all_terms[.x, ])
       
       resid <- expr((!!!response)-(!!!fit))
@@ -92,7 +94,7 @@ score_mean<- function(df, model,fitname="_fit_",residname="_resid_") {
       field <- vars[vals != "{{:}}" & !is.na(vals) & vars != "estimate"]
       val <-  vals[vals != "{{:}}" & !is.na(vals) & vars != "estimate"]
       ie <- map2(syms(field), val, function(x, y) expr((!!x) == (!!y)))
-      ie <- map(ie, function(x) expr(ifelse(!!x, 1, 0)))
+      ie <- map(ie, function(x) expr(ifelse(!!x, 1.0, 0.0)))
       set <- c(reg, ie, resid)
       reduce(set, function(l, r) expr((!!! l) * (!!! r)))
     } )
@@ -131,7 +133,7 @@ score_meansd<- function(df, model,fitname="_fit_",residname="_resid_") {
   
   f <- seq_len(nrow(all_terms)) %>%
     map(~{
-      vars <- colnames(all_terms)
+      vars <- strip_factor(colnames(all_terms))
       vals <- as.character(all_terms[.x, ])
       
       resid <- expr((!!!response)-(!!!fit))
