@@ -14,6 +14,11 @@ dbsample.tbl_monetdb <-function(tbl, n, N, variables, ... ){
 	dbGetQuery(tbl$src$con, build_sql("select ",ident(variables)," from (",sql(sql_render(tbl)), ") as foo sample ", as.integer(n)))
 }
  
+ dbsample.tbl_sql <-function(tbl, n, N, variables, ... ){
+	if (!is(tbl$src$con, 'SQLiteConnection')) stop("only implemented for RSQLite so far")
+	dbGetQuery(tbl$src$con, build_sql("select ",ident(variables)," from (", sql(sql_render(tbl)),  ") where abs(CAST(random() AS REAL))/9223372036854775808 <", as.double(n/N)))
+
+} 
  
  
 dbsample.tbl_df <-function(tbl, n, N, variables, ... ){
@@ -104,8 +109,10 @@ score_mean<- function(df, model,fitname="_fit_",residname="_resid_") {
     f <- c(f, sym(offset$vals))
   }
   
+  names(f)<-paste0("_u",seq_along(coef(model)))
+  
   df %>% 
-  	mutate(!!!map2(paste0("_u",seq_along(coef(model))),f, function(x,y) expr(!!x:=!!y))) %>%
+  	mutate(!!!f) %>%
 	summarise(!!!map(paste0("_u",seq_along(coef(model))), function(x) expr(mean(!!sym(x))))) %>%
     collect()
 }
@@ -154,8 +161,10 @@ score_meansd<- function(df, model,fitname="_fit_",residname="_resid_") {
     f <- c(f, sym(offset$vals))
   }
   
-  rval <- df %>% 
-  	mutate(!!!map2(paste0("_u",seq_along(coef(model))), f, function(x,y) expr(!!x:=!!y))) %>%
+    names(f)<-paste0("_u",seq_along(coef(model)))
+
+  
+  rval <- df %>% mutate(!!!f) %>%
 	summarise(!!!flatten(map(paste0("_u", seq_along(coef(model))), 
 			function(x) c(expr(mean(!!sym(x))),expr(sd(!!sym(x))))))) %>% 
 			collect()
