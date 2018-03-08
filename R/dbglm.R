@@ -1,10 +1,4 @@
 
-library(tidypredict)
-library(dbplyr)
-library(dplyr)
-library(purrr)
-library(rlang)
-library(MonetDBLite)
 
    
 dbsample<-function(con,...)  {UseMethod("dbsample")}
@@ -59,7 +53,7 @@ dbglm<-function(formula, family = binomial(), tbl, sd=FALSE,weights=.NotYetImple
   		V0<- vcov(model0)
   		V1<-vcov(model0)*(n/N)
   		beta1<-beta0+V1%*%U
-  		list(beta0,beta1,V0,V1)
+  		list(tildebeta=beta0,hatbeta=beta1,tildeV=V0,hatV=V1)
 
   }
 }
