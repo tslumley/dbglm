@@ -1,8 +1,9 @@
-importFrom("stats", "glm","coef","vcov")
+  importFrom("methods", "is")
+  importFrom("stats", "binomial", "sd", "terms", "glm","coef","vcov")
 import("DBI")
-import("dbplyr")
-import("rlang")
-import("purrr")
 import("dplyr")
+importFrom("purrr","map")
+import("rlang")
+import("tidypredict")
 export(dbglm)
 
