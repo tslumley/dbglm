@@ -32,6 +32,10 @@ library(dbplyr)
 
 vehicles<-read.csv("Fleet30Nov2017.csv")
 names(vehicles)<-tolower(names(vehicles))
+vehicles$power_rating<-as.numeric(as.character(vehicles$power_rating))
+vehicles$number_of_seats<-as.numeric(as.character(vehicles$number_of_seats))
+vehicles$number_of_axles<-as.numeric(as.character(vehicles$number_of_axles))
+
 sqlite<-dbDriver("SQLite")
 con<-dbConnect(sqlite,"nzcars.db")
 RSQLite:::initExtension(con)
