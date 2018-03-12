@@ -3,7 +3,7 @@ Title: Generalised linear models by subsampling and one-step polishing
 Version: 0.1
 Author: Thomas Lumley
 Description: Fast fitting of generalised linear models on moderately large datasets, by taking an initial sample, fitting in memory, then evaluating the score function for the full data in the database.
-Imports: DBI, dbplyr, tidypredict, purrr,rlang, methods,dplyr
+Imports: DBI, tidypredict, purrr,rlang, methods,dplyr
 Suggests: MonetDBLite, RSQLite
 License: GPL-3
 Maintainer: Thomas Lumley <t.lumley@auckland.ac.nz>
