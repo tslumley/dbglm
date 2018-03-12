@@ -11,7 +11,7 @@ library(dplyr)
 library(dbplyr)
 
 ms <- MonetDBLite::src_monetdblite("~/VEHICLE")
-monetdb.read.csv(ms$con, "Fleet-30Nov2017.csv",tablename="vehicles",quote="",nrow.check=10000,best.effort=TRUE,lower.case.names=TRUE)
+monetdb.read.csv(ms$con, "Fleet30Nov2017.csv",tablename="vehicles",quote="",nrow.check=10000,best.effort=TRUE,lower.case.names=TRUE)
 vehicles<-tbl(ms,"vehicles")
 cars <- filter(vehicles, vehicle_type == "PASSENGER CAR/VAN") %>% 
 	mutate(isred=ifelse(basic_colour=="RED",1,0)) %>% 
@@ -30,7 +30,7 @@ library(dplyr)
 library(dbplyr)
 
 
-vehicles<-read.csv("Fleet-30Nov2017.csv")
+vehicles<-read.csv("Fleet30Nov2017.csv")
 sqlite<-dbDriver("SQLite")
 con<-dbConnect(sqlite,"nzcars.db")
 RSQLite:::initExtension(con)
