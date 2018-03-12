@@ -30,6 +30,8 @@ library(dplyr)
 library(dbplyr)
 
 
+# data setup
+
 vehicles<-read.csv("Fleet30Nov2017.csv")
 names(vehicles)<-tolower(names(vehicles))
 vehicles$power_rating<-as.numeric(as.character(vehicles$power_rating))
@@ -41,7 +43,17 @@ con<-dbConnect(sqlite,"nzcars.db")
 RSQLite:::initExtension(con)
 dbWriteTable(con,"vehicles",vehicles)
 rm(vehicles)
+dbDisconnect(con)
 
+# analysis
+library(dbglm)
+library(RSQLite)
+library(dplyr)
+library(dbplyr)
+
+sqlite<-dbDriver("SQLite")
+con<-dbConnect(sqlite,"nzcars.db")
+RSQLite:::initExtension(con)
 sqlitevehicles<-tbl(con,"vehicles")
 
 
