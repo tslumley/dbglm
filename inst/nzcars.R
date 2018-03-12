@@ -31,6 +31,7 @@ library(dbplyr)
 
 
 vehicles<-read.csv("Fleet30Nov2017.csv")
+names(vehicles)<-tolower(names(vehicles))
 sqlite<-dbDriver("SQLite")
 con<-dbConnect(sqlite,"nzcars.db")
 RSQLite:::initExtension(con)
