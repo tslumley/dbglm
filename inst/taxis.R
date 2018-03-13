@@ -11,7 +11,7 @@
 ##
 ## 
 ## This is the directory you put them in
-datadir<-"~/taxi"
+datadir<-"~/TAXITEST"
 ##
 
 
@@ -20,11 +20,11 @@ library(MonetDBLite)
 library(dplyr)
 library(dbplyr)
 
-ms <- MonetDBLite::src_monetdblite("~/taxi/db")
+ms <- MonetDBLite::src_monetdblite(paste(datadir,"db",sep="/"))
 
 ## read the January to June data
-inputs<-list.files(datadir,"tripdata_2016-",full.names=TRUE)
-monetdb.read.csv(ms$con, inputs, tablename="yellow", header=TRUE, lower.case.names=TRUE, locked=TRUE)
+inputs<-list.files(datadir,"-0[1-6]",full.names=TRUE)
+monetdb.read.csv(ms$con, inputs, tablename="yellow", header=TRUE, lower.case.names=TRUE)
 
 ## read the July to December data (the header on the original file is wrong)
 nm<-tolower(strsplit("VendorID,tpep_pickup_datetime,tpep_dropoff_datetime,passenger_count,trip_distance,RatecodeID,store_and_fwd_flag,PULocationID,DOLocationID,payment_type,fare_amount,extra,mta_tax,tip_amount,tolls_amount,improvement_surcharge,total_amount,junk1,junk2",",")[[1]])
