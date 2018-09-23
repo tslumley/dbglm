@@ -31,7 +31,7 @@ We don't support weights
 If you want to analyze a subset, use \code{filter()} on the data
 }
   \item{\dots}{
-yada yada yada
+This argument is required for S3 method extension.
 }
 }
 \details{
